@@ -1,0 +1,1086 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  IEEEsample2e.tex %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% changes for IEEEtrans.cls marked with !PN
+%% except all occ. of IEEEtran.sty changed IEEEtran.cls
+%%%%%%%%%%                                                       %%%%%%%%%%%%%
+%%%%%%%%%%    More information: see the header of IEEEtran.cls   %%%%%%%%%%%%%
+%%%%%%%%%%                                                       %%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[twocolumn]{IEEEtran} %!PN
+%\documentclass[12pt,draft]{IEEEtran} %!PN
+%\documentclass[11pt,draft]{IEEEtran} %!PN
+%\documentstyle[twocolumn]{IEEEtran}
+%\documentstyle[12pt,twoside,draft]{IEEEtran}
+%\documentstyle[9pt,twocolumn,technote,twoside]{IEEEtran}
+
+\input{epsf}
+\usepackage{amsmath}
+\usepackage{amscd}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{bm}
+\usepackage{longtable}
+\usepackage{makeidx}
+\usepackage{graphicx}
+\usepackage{youngtab}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+\usepackage{verbatim}
+\usepackage{etoolbox}
+
+%---------------%
+%  comment out  %
+\topmargin -10mm  %
+\headsep 10mm   %
+%---------------%
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\setcounter{page}{1}
+\footnoterule \footnotesep 10mm
+
+\begin{document}
+
+\title{Linux Notes}
+\maketitle
+
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+\newcommand{\bi}{\begin{itemize}}
+\newcommand{\ei}{\end{itemize}}
+
+%\def\ruleone{\rule[-1.5ex]{0cm}{4.0ex}}
+%\vspace{1cm}
+
+\tableofcontents
+
+\section{Introduction}
+\begin{itemize}
+    \item GNU:
+    \bi
+        \item GNU is a Unix-like operating system
+        \bi
+            \item it is a collection of many programs: applications, libraries, developer tools, even games
+            \item GNU is free software that respects users' freedom
+        \ei
+        \item GNU stands for GNU's Not Unix
+        \item initiated by \textit{Richard Stallman}
+        \bi
+            \item also initiated Free Software movement \& Emacs
+        \ei
+	    \item GNU C, is referred to as GCC
+	    \item GNU General Public License (GPL)
+    \ei
+    \item Linux:
+    \bi
+	   \item created in $1991$, by Linus Torvalds
+	   \item literally, \emph{Linux} is the name of the OS's kernel
+	   \item in popular usage, Linux includes the whole ecosystem
+	   \bi
+        \item including accompanying GNU programs
+	    \item other programs
+	   \ei
+    \ei
+    \item Three levels of Linux system:
+    \begin{enumerate}
+      \item hardware
+      \item kernel
+      \item user processes
+    \end{enumerate}
+    \item Kernel:
+    \bi
+        \item the \emph{kernel} is the core of OS
+        \item the kernel is software in memory that tells the CPU what to do
+        \item the kernel manages HW and is the interface between HW and running program
+        \item the kernel manages the following:
+        \bi
+            \item system calls from processes, see next
+            \item managing processes
+            \item memory management
+            \item device drivers
+        \ei
+    \ei
+    \item User processes:
+    \bi
+        \item \emph{user processes} are the running programs that the kernel manages
+        \item these processes collectively form the \emph{user space}
+    \ei
+    \item Kernel versus user modes/spaces:
+    \bi
+        \item the kernel runs in \emph{kernel mode} \& has unrestricted access
+        \item the user processes run in \emph{user modes} which are restricted
+        \item the part of the main memory that user processors can access is called \emph{user space}
+        \item the area that only the kernel can access is called the \emph{kernel space}
+    \ei
+    \item Ubuntu:
+    \bi
+        \item \emph{Ubuntu} is a Linux distribution
+        \item code name is \emph{xenial}
+    \ei
+    \item User \& root user:
+    \bi
+        \item a \emph{user} is an entity that runs processes \& own files
+        \bi
+            \item users exist to support permissions and boundaries
+        \ei
+        \item a user is associated with a \emph{username}
+        \item the kernel identifies users by \emph{userids}
+        \item every user process has a user \emph{owner}
+        \item the \emph{root user} is an exception because they can interfere with other users,
+        \bi
+            \item also known as \emph{superuser}
+        \ei
+    \ei
+    \item Filesystem:
+    \bi
+	   \item Linux has a single filesystem tree
+	   \bi
+            \item this is unlike Windows
+            \item storage devices are mounted at various points on the tree
+	   \ei
+	   \item filenames that begin with . symbol are hidden
+	   \item filenames and commands are case sensitive
+	   \item no concept of file extension
+	   \item do not imbed spaces in filenames
+    \ei
+    \item Permissions:
+    \bi
+        \item a file's \emph{mode} summarizes the files permission
+        \item the mode has the following format
+\begin{verbatim}
+trwxrwxrwx
+\end{verbatim}
+        \item t stands for \emph{type}
+        \bi
+            \item 't=-' means file
+            \item 't=d' means directory
+            \item 't=b' means \emph{block}
+            \item 't=c' means \emph{character}
+            \item 't=p' means \emph{pipe}
+            \item 't=s' means \emph{socket}
+            \item 'b', 'c', 'p', or 's' imply a device
+        \ei
+        \item the $9$ remaining fields are partitioned into $3$ sets:
+        \bi
+            \item permissions for user (u)
+            \item permission for group (p)
+            \item permission for other (o)
+        \ei
+        \item each set has three fields
+        \bi
+            \item read (r)
+            \item write (w) and
+            \item executable (x)
+        \ei
+        \item absence of a permission is denoted by '-'
+        \item directories need to be executable to be able to be accessible
+    \ei
+    \item Running an executable file:
+    \bi
+        \item make sure file permission 'x' is turned on
+        \item ttype \verb|./fn|
+    \ei
+    \item Common directories:
+    \bi
+        \item \verb|/bin| contains binaries, or executables, that must be present for the system to boot and run
+        \item \verb|/boot| contains Linux Kernel, initial RAN disk image (for drivers needed at boot time) and the boot loader
+        \item \verb|/dev| contains device nodes
+        \item \verb|/etc|, contains system configuration files
+        \bi
+            \item shell scripts, password, boot, device and networking setup files
+        \ei
+        \item \verb|/home|, contain regular user directories
+        \item \verb|/lib|, abbreviation for library, DLL equivalent
+        \item \verb|/media|, mount points for removable media such as USB drives and CD-ROMs
+        \item \verb|/mnt| is a generic mount point under which you mount your file-systems or devices
+        \item \verb|sys| device and system interface
+        \item \verb|sbin|, system bin, system executables, for system administrators
+        \item \verb|/usr| contains bulk of Linux system programs \& support files used by users
+        \bi
+            \item many of the directory names are the same as the root directory, and hold same type of data
+            \item \verb|/usr/include| holds header files by the C compiler
+            \item \verb|/usr/info| contains GNU info manuals
+            \item \verb|/usr/local| is where administrators store their own software
+            \item \verb|/usr/man| contains manual pages
+        \ei
+        \item \verb|/var|, variable directory, where runtime information is stored
+    \ei
+    \item Text editors:
+    \bi
+        \item \verb|emacs|
+        \item \verb|nano  #basic editor|
+        \item \verb|vi|
+        \item \verb|less|
+        \bi
+            \item see the contents of a file one screen at a time
+            \item press \verb|spacebar| for next screen
+            \item press \verb|b| for previous screen
+            \item press \verb|/text| to search for text forward
+            \item press \verb|q| to exit
+            \item can redirect to less \verb!command | less!
+        \ei
+    \ei
+    \item Remote log in:
+    \bi
+        \item OpenSSH is a freely available version of the \emph{Secure Shell} (SSH) protocol family of tools for remotely controlling, or transferring files between, computers
+    \ei
+    \item X windows system:
+	\bi
+         \item GUI (Graphic User Interface) uses a terminal emulator to interact with the shell
+         \item WIMP stands for windows, icons, menus, pointer
+         \item a \emph{windowing system} (or window system) is a type of GUI which implements the WIMP paradigm for a user interface
+         \bi
+            \item can think of a windowing system as a device driver
+         \ei
+		 \item the \emph{X Window System} (X11, or shortened to simply X) is a windowing system for bitmap displays, common on UNIX-like computer operating systems
+        \item think of X as sort of the kernel of the desktop that manages anything from generating windows to configuring displays to handling input devices
+        \bi
+            \item for example, X windows allows copying using mouse right and middle buttons
+        \ei
+        \item there is an X \emph{server} and an X \emph{client}
+	\ei
+    \item Desktop environment: Gnome:
+    \bi
+        \item a \emph{desktop environment} (DE), is a collection of software designed to give functionality and a certain look and feel to an operating system
+        \bi
+            \item important parts of a DE are the window manage (WM) and the file manager
+            \item DE provides utilities to set wallpapers and screen-savers, display icons on the desktop, and perform some administrative tasks
+            \item in Ubuntu all DE's uses X windows system
+        \ei
+	    \item Gnome is a desktop environment and is part of GNU Project
+        \bi
+            \item Gnome3 is the current version
+        \ei
+        \item Ubuntu tracks Gnome, but uses \emph{Unity shell} rather than Gnome shell
+    \ei
+\end{itemize}
+
+\newpage
+\section{Bash}
+\begin{itemize}
+    \item Shell:
+	\bi
+        \item a shell is a program that takes keyword commands and passes it to the OS
+        \item a shell is a \emph{command line interface} (CLI)
+		\item general command structure is \newline
+		\verb|command -options arguments|
+	    \item options could be
+        \bi
+            \item a single character (e.g. -l) or
+            \item long option, (e.g. --reverse)
+        \ei
+        \item a \emph{shell script} are text files that contain a sequence of shell commands
+    \ei
+    \item Shell prompt:
+    \bi
+	   \item commands are entered at the \emph{shell prompt}
+	   \item format is usually user@machinename followed by current working directory
+	   	\item \$ ending implies a regular user, \# implies a superuser
+	   	\item a terminal is initialized to its home directory
+    \ei
+    \item Bourne shell:
+    \bi
+        \item there are many different Unix shells
+        \item all shells derive features from Bourne shell
+        \item Bourne shell program is located at \emph{/bin/sh}
+        \item Bourne shell was developed at Bell Labs
+    \ei
+    \item bash:
+    \bi
+        \item the shell used in Linux/Ubuntu is \emph{bash}
+		\item bash stands for Bourne-Again Shell
+        \item bash is an enhanced version of Bourne shell
+        \item \verb|/bin/sh| is a link to bash \verb|/bin/bash|
+	\ei
+    \item Streams \& standard I/O:
+    \bi
+        \item processes use I/O \emph{streams} to read and write data
+        \item each process may be associated with
+        \bi
+            \item \emph{stdin} or \emph{standard input}
+            \item \emph{stdout} or \emph{standard output}
+            \item \emph{standard error}
+        \ei
+    \ei
+    \item Redirection \& pipe:
+    \bi
+        \item use the redirection character to send the output of a command to a file
+        \begin{verbatim}
+command > fn  #fn overwritten
+command >> fn #appended to fn
+        \end{verbatim}
+        \item to send stdout of a command to the stdin another command
+        \begin{verbatim}
+command1 | command2
+        \end{verbatim}
+    \ei
+    \item Control commands:
+    \bi
+        \item $\wedge$ + Alt + T starts a terminal
+        \item $\wedge$ + D stops a current standard input
+        \item $\wedge$ + C terminated a program
+    \ei
+    \item history:
+    \bi
+	   \item up arrow shows previous command
+	   \item \verb|history| command lists history
+    \ei
+    \item Filesystem navigation symbols:
+    \bi
+        \item the \verb|.| symbol refers to the current working directory
+        \bi
+            \item when  \verb|./| is pre-pended to a filename, then it is searched only in current directory
+        \ei
+	    \item the \verb|..| symbol refers to the parent working directory
+        \item the $\sim$ symbol refers to home directory
+    \ei
+    \item Wildcards:
+    \bi
+        \item wildcards can be used with any command that that accepts fn as argument
+        \item * symbol represents any characters
+        \item ? symbol represents a single character
+        \item $[$characters$]$ represents any character $\in$ set
+        \bi
+            \item e.g. [abc]
+        \ei
+        \item $[[:\text{class}]]$ represents any character that $\in$ class
+        \bi
+            \item e.g. $[[:\text{alnum}]]$, $[[:\text{alpha}]]$, $[[:\text{digit}]]$, $[[:\text{lower}]]$, $[[:\text{upper}]]$
+        \ei
+    \ei
+    \item help with commands:
+    \bi
+        \item the \emph{manual} command is \verb|man|
+        \bi
+            \item the manual has eight sections
+        \ei
+        \begin{verbatim}
+command-name --help #basic help
+man command    #more detailed
+man -k keyword #to search
+info command   #more complex
+        \end{verbatim}
+    \ei
+    \item Simple commands:
+    \begin{verbatim}
+date
+cal   # calender
+clear # brings cursor to top of screen
+exit  # exits terminal
+    \end{verbatim}
+    \item Filesystem navigation commands:
+    \begin{verbatim}
+pwd    # print working directory
+ls     # list
+ls -a  # all files
+ls -l  # long format
+ls -t  # sorted- last modified time
+cd     # change directory
+cd     # to home directory
+    \end{verbatim}
+    \item File \& directory manipulation:
+    \begin{verbatim}
+cp             # copy
+cp item1 item2 # 1->2
+cp item1 item2 dir #1,2 -> d
+cp -R ...      # recursive, with dir
+mv             # move
+mkdir          # make directory
+rmdir          # remove directory
+rm -rf * #recursively remove files/dir
+rm             # remove
+touch fn       # creates fn
+file fn        # tells type of fn
+diff fn1 fn2
+    \end{verbatim}
+    \item \verb|echo text|
+    \bi
+        \item echo prints its argument to stdout
+        \item \verb|echo $X| prints value of X variable
+    \ei
+    \item \verb|cat fn|
+    \bi
+        \item cat reads files sequentially, writing them to stdout
+        \item the name cat is derived from its function to concatenate files
+    \ei
+    \item \verb|grep text dir_fn|
+    \bi
+        \item looks for a  text in directory or filename dir\_fn
+        \item -i option makes text case-insensitive
+    \ei
+    \item \verb|find dir -name fn -print|
+    \bi
+        \item to find fn in directory dir
+    \ei
+    \item \verb|passwd|
+    \bi
+        \item to change password
+    \ei
+    \item Processes:
+    \bi
+        \item a process can be executed in background by ending the command with \verb|&|
+        \item each process on the system is has a numeric \emph{process ID}, or PID
+        \item \verb|ps| reports a snapshot of the current processes
+        \begin{verbatim}
+ps -elf #e=every, f=full-format
+ps x    #all
+ps -elf | grep lightdm
+kill pid #terminates, last resort
+        \end{verbatim}
+    \ei
+    \item Changing file permission: \verb|chmod|
+    \begin{verbatim}
+chmod g+r fn #read permission to group
+chmod o-w fn #removes write permission
+chmod 644 fn #octal, absolute change
+    \end{verbatim}
+    \item Link \& alias: \verb|ln| \& \verb|alias|
+    \bi
+        \item a link can be hard (\verb|ln|), or symbolic (\verb|ln -s|)
+        \item a \emph{symbolic link} is a file that points to another file or directory effectively creating an alias
+        \item symbolic links offer quick access to obscure directory paths
+        \item to create a symbolic link, type
+        \begin{verbatim}
+ln -s target link-name
+        \end{verbatim}
+        where the \verb|target| is where the link is pointing to,
+        \item \verb|alias| lists the current aliases
+    \ei
+    \item Compress and archive:
+    \begin{verbatim}
+ gzip fn  #compress, 1 fn, --> fn.gz
+ gunzip fn.gz  #fn.gz --> fn
+ tar cvf archive.tar fn1 fn2 #fn->ar
+ tar xvf archive.tar     #archive->fn
+ tar tvf archive.tar #table-of-content
+    \end{verbatim}
+    \bi
+        \item .tar suffix is convention nor requirement
+        \item c flag means create
+        \item x flag means extract
+        \item f flag should precede archive file
+        \item p flag preserves permissions
+        \item an archive could be compressed \verb|fn.tar.gz|
+    \ei
+    \item \verb|zip| \& \verb|unzip|:
+    \bi
+        \item to \verb|zip| all files in a directory type \newline \verb|zip fn *|
+        \item \verb|unzip fn|
+        \item \verb|fn| does not not include extension
+    \ei
+    \item \verb|ldd|
+    \bi
+        \item  \verb|ldd| invokes the standard dynamic linker
+        \item the library GLIBC is the standard dynamic linker
+    \ei
+\end{itemize}
+
+\newpage
+\section{Environment \& Configuration}
+\begin{itemize}
+    \item Shell variable:
+    \bi
+        \item the shell can store temporary variables, called \emph{shell variables},
+    \ei
+    \begin{verbatim}
+    Y=10   #to set, no space
+    Y="$Z" #assignment
+    echo $Y
+    \end{verbatim}
+    \item Environment variable \& \verb|export|
+    \bi
+        \item an \emph{environment variable} is similar to a shell variable but it is not specific to a shell,
+        \item the OS passes the environment variables to programs that the shell runs,
+        \item assign an environment variable using the \verb|export| command,
+        \item exporting a variable makes the variable available to all sub-shells and processes created by that shell,
+        \item it does not make it available everywhere in the system, only by processes created from that shell.
+    \ei
+    \item \verb|set|
+    \bi
+        \item to set or unset options and positional parameters,
+        \item without options displays both the shell and environment variables.
+    \ei
+    \item \verb|printenv|
+    \bi
+        \item displays only environment variables,
+        \item \verb|printenv Y| lists the value of $Y$.
+    \ei
+\end{itemize}
+
+
+\subsection{Environment variables}
+\begin{itemize}
+    \item \verb|PATH|
+    \bi
+        \item a \emph{command path} is a list of system directories that the shell searches when trying to locate a command,
+        \item \verb|PATH| is a special environment variable that contains the command path,
+        \item can add a directory \verb|dir| first or last as follows
+        \begin{verbatim}
+PATH=dir:$PATH
+PATH=$PATH:dir
+        \end{verbatim}
+    \ei
+    \item  \verb|LD_LIBRARY_PATH|
+    \bi
+        \item dynamic link library path.
+    \ei
+    \item \verb|DISPLAY|
+    \bi
+        \item X window system variable,
+        \item is the name of the display if running a graphical environment,
+        \item general format is \newline \verb|DISPLAY = hostname:D.S|
+        \bi
+            \item omitted hostname means local host,
+            \item D means display number,
+            \item S means screen number.
+        \ei
+        \item for example, \verb|:0| means its the first display generated by X server,
+    \ei
+    \item \verb|TERM|
+    \bi
+        \item name of terminal type
+        \item \verb|xterm|.
+    \ei
+    \item \verb|HOME|
+    \bi
+        \item pathname of home directory,
+    	\item \verb|/home/ara|.
+    \ei
+    \item \verb|USER|
+    \bi
+        \item username,
+        \item \verb|ara|.
+    \ei
+    \item \verb|PS1|
+    \bi
+        \item stands for \emph{prompt string} $1$,
+        \item built-in shell variable,
+        \item defines the contents of the shell prompt,
+        \item initially defined in \verb|/etc/profile|,
+        \item then modified in \verb|/home/ara/.bashrc|.
+    \ei
+    \item \verb|SHELL|
+    \bi
+        \item name of shell program being used,
+        \item \verb|/bin/bash|.
+    \ei
+\end{itemize}
+
+
+\subsection{Configuration files}
+\begin{itemize}
+  \item Startup files:
+    \bi
+        \item when a user logs on, the bash program initiates a series of configuration scripts called \emph{startup files},
+        \item there are global scripts followed by user scripts,
+        \bi
+            \item global startup files in \verb|/etc| directory, define the default environment shared by all users,
+            \item user startup files, \verb|/home/ara|, can be used to extend or override settings in global configuration script,
+        \ei
+        \item in addition, there are two kinds of shell sessions: login shell sessions \& non-login shell sessions,
+        \bi
+            \item a \emph{login session} prompts for user name \& password,
+            \item a \emph{non-login session} typically occurs when a new terminal is launched.
+        \ei
+    \ei
+    \item \verb|/etc/profile|
+    \bi
+        \item global startup file for login sessions,
+        \item in interactive session it launches \newline \verb|/etc/bashrc|,
+        \item also execute the scripts \newline \verb|/etc/profile.d/*.sh|.
+    \ei
+    \item \verb|/home/ara/.profile|
+    \bi
+        \item user startup file for login sessions,
+        \item in interactive session it launches \newline \verb|/home/ara/.bashrc|,
+    \ei
+    \item \verb|/etc/bash.bashrc|
+    \bi
+    \item global startup file for non-login sessions,
+        \item is used to set environmental items for a users shell,
+        \item is executed for both interactive and non-interactive shells,
+    \ei
+    \item \verb|/home/ara/.bashrc|
+    \bi
+        \item user startup file for non-login sessions,
+        \item I have CUDA initialization, and my aliases.
+    \ei
+    \item \verb|/etc/X11/xorg.conf|
+    \bi
+        \item the X configuration file provides a means to configure the X server,
+        \item the NVIDIA driver includes a utility called \verb|nvidia-xconfig|, which is designed to make editing the X configuration file easy,
+        \item for diagnosis read \verb|/var/log/Xorg.0.log|
+        \bi
+            \item lines that start with (EE) indicate error.
+        \ei
+    \ei
+    \item Activating changes: \verb|source|
+    \bi
+        \item changes to startup files will not take effect until the terminal session is closed and start a new one,
+        \item \verb|source| is a bash shell built-in command that executes the content of the file passed as argument,
+        \verb|source fn|
+        \item \verb|source| has a synonym in the symbol '.' (dot) \newline
+        \verb|. fn|
+    \ei
+\end{itemize}
+
+
+\newpage
+\section{System Administration}
+\begin{itemize}
+    \item Version I am using:
+    \bi
+        \item Ubuntu version $16.04.1$ LTS
+        \item kernel version $4.4.0-47-$generic
+        \item GCC $5.4.0$
+        \item GLIBC $2.23$
+        \item Python $2.7.12$
+    \ei
+    \item \verb|lsb_release -a|
+    \bi
+        \item lsb means Linux Standard Base
+        \item tells you about OS details
+    \ei
+    \item \verb|uname|:
+    \begin{verbatim}
+    uname -m #32 vs 64 bit
+    uname -r #kernel version
+    \end{verbatim}
+    \item \verb|sudo|
+    \bi
+        \item super user, administrative rights
+        \item precede any command with sudo
+        \item can enter super user mode by typing
+        \begin{verbatim}
+sudo su
+        \end{verbatim}
+    \ei
+    \item Storage management:
+    \begin{verbatim}
+    df -h  # disk free, h=human
+    du -h  # disk (dir) usage
+    free   # free memory
+    \end{verbatim}
+     \item Dependency clashing:
+    \bi
+       \item if a package requires a shared resource (shared library), it is said to have a \emph{dependency}
+       \item dependencies can be problematic when two different applications require incompatible versions of the same dependency
+    \ei
+    \item Dependency environments:
+    \bi
+        \item to address dependency clashing, some package distribution managers have software that create environments, inside of which specific versions of software can be maintained independent of those contained in other environments
+    \ei
+    \item Operating-system-level virtualization:
+    \bi
+        \item \emph{OS-level virtualization} is a server virtualization method in which the kernel of an OS allows the existence of multiple isolated user-space instances, instead of just one
+        \item such instances are sometimes called \emph{containers}, \emph{software containers}, \emph{virtualization engines} or \emph{jails}
+        \item containers may look and feel like a real server from the point of view of its owners and users
+        \item \emph{Docker} is an open-source project that automates the deployment of applications inside software containers
+        \item recommended to use TensorFlow in a container if running over multiple computers
+    \ei
+    \item \verb|dmesg|
+	\bi
+		\item \verb|dmesg| stands for \emph{display message}
+        \item \verb|dmesg| is used to examine or control the kernel ring buffer
+        \bi
+		  \item \verb|dmesg| lists the message buffer of the kernel
+        \ei 		
+        \item the output typically contains the messages produced by the device drivers
+        \item when the computer fails unexpectedly after reboot can use this command
+	\ei
+    \item Boot
+    \bi
+        \item to change boot parameters check
+        \begin{verbatim}
+etc/default/grub
+        \end{verbatim}
+    \ei
+\end{itemize}
+
+\newpage
+\subsection{Package Management}
+\begin{itemize}
+    \item Package management \& distributors:
+    \bi
+        \item \emph{package management} is a method of installing and maintaining software on the system
+        \item one of the most important factors of a distribution is the quality of the packaging system
+        \item most distributions fall into one of two camps of packaging technologies:
+        \bi
+            \item \emph{Debian} style (.deb) that includes Ubuntu
+            \item Red Hat style (.rpm)
+        \ei
+    \ei
+    \item Package file:
+    \bi
+       \item the basic unit of software in a packaging system is the \emph{package file}
+       \item a package file is a compressed collection of files that comprise the software package
+       \item the package file may include programs, data files, metadata, pre- and post-installation scripts, etc.
+    \ei
+    \item Repositories:
+    \bi
+        \item most packages today are created by the distribution vendors
+        \item a distribution makes packages available to the user in central \emph{repositories}
+        \item a distribution may also have related third-party repositories
+        \item package management system provide some method of dependency resolution
+    \ei
+    \item Ubuntu package manager:
+    \bi
+        \item \verb|dpkg| is a low level manager
+        \item \verb|apt|, or \emph{advanced package tool}, is high-level manager
+        \bi
+            \item also stands for \emph{aptitude}?
+        \ei
+    \ei
+    \item \verb|dpkg|
+    \begin{verbatim}
+dpkg -l #lists installed packages
+dpkg -i package #install
+dpkg -r package #remove
+dpkg --status package, #installed?
+dpkg --search fn #package for fn
+    \end{verbatim}
+    \item \verb|apt|
+    \begin{verbatim}
+apt-get update #updates list only
+apt-get upgrade #does installation
+apt-get install xyz
+apt-get remove package
+apt autoremove #removes unnecessary
+apt-cache search search-string
+apt-cache show package
+apt list --installed #installed packages
+    \end{verbatim}
+    \item PPA
+    \bi
+        \item a \emph{personal package archive}, or PPA, is a software repository for uploading source packages to be built and published as an \verb|apt| repository
+        \item PPA offers stable proprietary Nvidia graphics driver updates, without updating other libraries to unstable versions
+        \item to add graphics driver PPA:
+    \begin{verbatim}
+   sudo add-apt-repository
+       ppa:graphics-drivers/ppa
+    \end{verbatim}
+    \ei
+\end{itemize}
+
+
+\newpage
+\subsection{Devices}
+\begin{itemize}
+    \item Device drivers:
+    \bi
+        \item device drivers are part of the Linux kernel
+        \bi
+            \item not in repository
+            \item usually in \verb|/dev| directory
+            \item base path for devices is \verb|/sys/devices|
+        \ei
+        \item the kernel presents many of the I/O device interfaces to user processes as files
+        \item exceptions when the driver is not in kernel:
+        \bi
+            \item device is too new
+            \item device is exotic, can compile
+            \item HW vendor is hiding something
+        \ei
+    \ei
+
+    \item \verb|ubuntu-drivers devices|
+    \bi
+        \item Ubuntu specific command that lists devices
+    \ei
+    \item \verb|lshw|
+    \bi
+        \item \verb|lshw| stands for \emph{list hardware}
+        \item \verb|lshw| extracts information about the hardware configuration of the machine
+    \ei
+        \begin{verbatim}
+    lshw -class display
+    lshw -short   #lists H
+        \end{verbatim}
+    \item \verb|lspci|
+    \bi
+        \item \verb|lspci| displays information about PCI buses in the system, and about the devices connected to them
+    \ei
+    \begin{verbatim}
+    lspci -v | grep -i nvidia
+    sudo update-pciids #update PCIe dev
+    \end{verbatim}
+    \item Display manager: LightDM
+    \bi
+        \item a \emph{display manager} is responsible for starting the display server and loading the desktop after you type in your username and password
+        \bi
+            \item display manager is not the same thing as a window manager or a display server
+        \ei
+        \item \emph{LightDM} stands for \emph{lightweight display manager}
+        \item LightDM is the default display manager for Ubuntu
+        \bi
+            \item LightDM is an X display manager
+            \item it starts the X servers, user sessions and greeter
+        \ei
+        \item the login window is known as the \emph{greeter}
+        \bi
+            \item LightDM offers separate greeter packages
+            \item the default greeter in Ubuntu is \emph{Unity Greeter}
+        \ei
+        \item display manager \verb|lightdm| should be temporarily turned off before making changes to this config file and then restored
+    \ei
+    \item \verb|service|
+    \bi
+        \item can use \verb|service| stop and start services temporarily
+    \ei
+    \begin{verbatim}
+    service --status-all
+    service lightdm status
+    sudo service lightdm stop
+    sudo service lightdm start
+    sudo service lightdm restart
+    \end{verbatim}
+    \item \verb|update-alternatives|
+    \bi
+        \item creates, removes, maintains and displays information about the symbolic links,
+        \item  \verb|--config fn| shows available alternatives for a link group and allow the user to interactively select which one to use,
+        \item monitor showed the right resolution after I entered
+        \begin{verbatim}
+sudo update-alternatives --config
+    x86_64-linux-gnu_gl_conf #debug
+        \end{verbatim}
+    \ei
+\end{itemize}
+
+\newpage
+\subsection{C \& Python}
+\begin{itemize}
+    \item GCC
+    \bi
+        \item GNU compiler for C++,
+        \item to find version  type \verb| gcc -v|.
+    \ei
+    \item GLIBC
+    \bi
+        \item the GNU C Library is the GNU Project's implementation of the C standard library,
+        \item despite its name, it now also directly supports C++,
+        \item to find version type \verb| ldd --version|.
+    \ei
+    \item Python:
+    \bi
+        \item start a Python session by typing \verb|python|
+        \item to find version type \verb| python --version|
+        \item in \verb|/usr/local/lib/python2.7|
+    \ei
+    \item \verb|python-pip|
+    \bi
+        \item \verb|pip| stands for \emph{Installs Python} (recursive)
+        \item \verb|pip| is a package management system to install and manage software packages written in Python
+        \item \verb|apt-get install python-pip|
+        \item \verb|python -m pip install --upgrade pip|
+        \item \verb|pip install --upgrade pip|
+        \item \verb|pip install --user scipy|
+        \item \verb|pip install --user matplotlib|
+        \item \verb|pip install --user sympy|
+        \item can use \verb|pip| to install basic TensorFlow
+    \ei
+    \item  \verb|python-dev|
+    \bi
+        \item \verb|python-dev| is the package that contains the header files for the Python C API
+        \item \verb|python-dev| is used by lxml because it includes Python C extensions for high performance
+        \item \verb|apt-get install python-dev|
+    \ei
+    \item \verb|python-numpy|
+\begin{verbatim}
+    apt-get install python-numpy
+    pip install --user numpy
+\end{verbatim}
+    \item \verb|python-wheel|
+    \bi
+        \item wheels are the new standard of python distribution
+        \item support is offered in pip $\geq 1.4$
+        \item a wheel is a ZIP-format archive with a specially formatted filename and the .whl extension
+        \item wheel is designed to contain all the files that is very close to the on-disk format
+        \item \verb|apt-get install python-wheel|
+    \ei
+    \item Anaconda:
+    \bi
+        \item \emph{Anaconda} is an open source distribution of the Python and R programming languages for large-scale data processing, predictive analytics, and scientific computing, that aims to simplify package management and deployment
+        \item \url{https://www.continuum.io/why-anaconda}
+        \item I have used Anaconda as a Python compiler
+        \item both Python versions are included in Anaconda
+        \item \emph{Conda} is Anaconda's package manager application that quickly installs, runs, and updates packages and their dependencies
+        \bi
+            \item Conda is also an environment manager application
+        \ei
+    \ei
+    \item PyCharm
+    \bi
+        \item \emph{PyCharm} is an Integrated Development Environment (IDE) used for programming in Python,
+        \item \url{https://www.jetbrains.com/pycharm/}
+        \item in Windows, used Anaconda compiler in PyCharm.
+    \ei
+    \item Jupyter Notebook:
+    \bi
+        \item formerly \emph{iPython Notebook}
+        \item interactively write documents that include code, text, output and \emph{LateX}
+    \ei
+    \item Python environments to address dependency clashing:
+    \bi
+        \item recommended to use a Python dependency environment when running TensorFlow on a single computer
+        \item two possibilities include:
+        \bi
+            \item for the standard distributions use \verb|Virtualenv|
+            \item Anaconda comes with a built-in environment system
+        \ei
+    \ei
+    \item \verb|python-virtualenv|
+    \bi
+        \item to create a virtual Python environment
+        \item \verb|apt-get install python-virtualenv|
+        \item create a directory, e.g. \verb|env|, that contains this environment
+        \item create environment using \verb|virtualenv| command
+ \begin{verbatim}
+ virtualenv --system-site-packages
+    ~/env/tensorflow
+ \end{verbatim}
+        \item activate environment using \verb|source| command
+ \begin{verbatim}
+ source  ~/env/tensorflow/bin/activate
+ \end{verbatim}
+        \item environment should be active when installing with \verb|pip|
+        \item exit environment by the command
+ \begin{verbatim}
+ deactivate
+ \end{verbatim}
+    \ei
+\end{itemize}
+
+
+
+\newpage
+\subsection{Accelerated computing}
+\begin{itemize}
+    \item Installation hierarchy:
+    \beq\begin{CD}
+       \text{Linux kernel } \verb|4.4.0|\\
+       @VVV \\
+       \text{device driver: } \verb|NVIDIA 367.57| \\
+       @VVV\\
+       \verb|CUDA V8.0.44|\\
+       @VVV\\
+        \verb|cuDNN v5.1.5|\\
+        \verb|cuBLAS v8.0|\\
+        \verb|cuFTT v8.0|\\
+        \verb|cuRAND v8.0|\\
+       @VVV\\
+       \verb|python-pip|\\
+       \verb|python-dev|\\
+       \verb|python-numpy|\\
+       @VVV\\
+       \verb|TensorFlow|
+    \end{CD}\eeq
+    \item NVIDIA GPU cards \& drivers:
+    \bi
+        \item Titan X (Pascal), GeForce $10$ series, GP102
+        \item GeForce GT $710$B, GK208
+        \item installed in \verb|/usr/lib/nvidia-367|
+        \item \verb|nvidia-smi| shows GPUs and driver
+        \item driver version can be founds as \newline \verb|cat /proc/driver/nvidia/version|
+        \item \verb|nvidia-xconfig| configures xorg.conf
+    \ei
+    \item \verb|CUDA| installation:
+    \bi
+        \item download from \url{https://developer.nvidia.com/cuda-downloads}
+        \bi
+            \item use \verb|deb(local)| option which is a large package
+        \ei
+        \item to install downloaded package
+\begin{verbatim}
+    sudo dpkg -i fn.deb
+    sudo apt-get update
+    sudo apt-get install cuda
+\end{verbatim}
+    \item  \verb|libcupti-dev|
+    \bi
+        \item  the \verb|libcupti-dev| library is the NVIDIA CUDA Profile Tools Interface
+        \item this library provides advanced profiling support
+        \item to install type
+\begin{verbatim}
+sudo apt-get install libcupti-dev
+\end{verbatim}
+    \ei
+    \item \verb|nvcc|
+        \bi
+            \item the \verb|nvcc| command runs the compiler driver that compiles CUDA programs
+            \item \verb|nvcc| calls the GCC compiler for C code, \& the NVIDIA PTX compiler for the CUDA code
+            \item \verb|nvcc --version| prints CUDA version
+        \ei
+    \ei
+    \item \verb|CUDA|
+    \bi
+        \item installed in \verb|/usr/local/cuda|
+        \bi
+            \item \verb|CUDA_HOME=/usr/local/cuda-8.0|
+        \ei
+        \item \verb|CUDA_VISIBLE_DEVICES|
+        \bi
+            \item NVIDIA environment variable that specifies PCI device $0$ (Titan) to be a CUDA device
+            \item defined it in \verb|/home/ara/.bashrc|
+        \ei
+        \item \verb|cudaSetDevice(a)| sets GPU $a$ for CUDA computing
+        \item \verb|cuda_devices| is an alias that shows active CUDA devices
+        \item after installation, query CUDA device by typing
+        \begin{verbatim}
+/usr/local/cuda-8.0/samples/bin/...
+    x86_64/linux/release/deviceQuery
+        \end{verbatim}
+    \ei
+    \item \verb|cuDNN|
+    \bi
+        \item separate add-on designed for DNN
+        \item download from \url{https://developer.nvidia.com/cudnn}
+        \item inside \verb|/usr/local/cuda| directory type
+\begin{verbatim}
+    tar xvzf fn.tgz
+    cp cuda/include/cudnn.h include
+    chmod a+r include/cudnn.h
+    cp cuda/lib64/libcudnn* lib64
+    chmod a+r lib64/libcudnn*
+\end{verbatim}
+    \ei
+    \item \verb|tensorflow|
+    \bi
+        \item TensorFlow is open source code provided by Google
+        \item if using GPU, then build TensorFlow from source
+        \item from home directory, clone latest TensorFlow source code from GitHub
+\begin{verbatim}
+    git clone --recursive-submodules
+        https://github.com/
+        tensorflow/tensorflow
+    cd tensorflow
+    ./configure
+\end{verbatim}
+        \item Bazel
+        \bi
+            \item TensorFlow uses \emph{Bazel} to build executable code from source code
+            \item Bazel is open source code provided by Google
+            \bi
+                \item Bazel is similar to \emph{make}
+            \ei
+            \item install Bazel
+            \item  create TensorFlow executable
+        \ei
+\begin{verbatim}
+    bazel build -c opt --config=cuda
+        //tensorflow/tools/pip_package:
+        build_pip_package
+\end{verbatim}
+    \item Python packages TensorFlow
+        \bi
+            \item dependency clashing prevention is done through Python
+        \ei
+    \ei
+
+\end{itemize}
+
+\end{document}
